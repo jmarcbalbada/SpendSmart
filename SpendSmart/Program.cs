@@ -11,9 +11,14 @@ namespace SpendSmart
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
+
+            // Add Swagger services
+            builder.Services.AddSwaggerGen();
+
             builder.Services.AddDbContext<SpendSmartDbContext>(options =>
                 options.UseInMemoryDatabase("SpendSmartDb")
             );
+
 
             var app = builder.Build();
 
@@ -23,6 +28,12 @@ namespace SpendSmart
                 app.UseExceptionHandler("/Home/Error");
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
+            }
+            else
+            {
+                // Enable Swagger in development mode
+                app.UseSwagger(); 
+                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "SpendSmart API v1"));  // <-- Add this line for the Swagger UI
             }
 
             app.UseHttpsRedirection();
